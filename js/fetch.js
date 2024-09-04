@@ -1,24 +1,40 @@
-const fetchBtn = document.getElementById("fetch")
-const dogContainer = document.getElementById("dog-container")
+const fetchDogBtn = document.getElementById("fetch-dog")
+const fetchCatBtn = document.getElementById("fetch-cat")
+const picContainer = document.getElementById("pic-container")
 
-fetchBtn.addEventListener("click", (event) => {
+fetchDogBtn.addEventListener("click", (event) => {
     clearDiv()
     event.preventDefault() // https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault
-    getData()
+    getData(1)
 })
 
-async function getData() {
-    
-    const url = "https://dog.ceo/api/breeds/image/random"
-    const dataPromise = await fetch(url)
-    const dataJSON = await dataPromise.json()
+fetchCatBtn.addEventListener("click", (event) => {
+    clearDiv()
+    event.preventDefault() // https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault
+    getData(0)
+})
 
+
+async function getData(num) {
     const img = document.createElement("img")
-    img.src = dataJSON.message
-    dogContainer.appendChild(img)
+    console.log(num)
+    if (num==1) {
+        const url = "https://dog.ceo/api/breeds/image/random"
+        const dataPromise = await fetch(url)
+        const dataJSON = await dataPromise.json()
+
+        img.src = dataJSON.message
+    } else {
+        const url = "https://api.thecatapi.com/v1/images/search"
+        const dataPromise = await fetch(url)
+        const dataJSON = await dataPromise.json()
+        img.src = dataJSON[0].url
+    }
+    
+    picContainer.appendChild(img)
 
 }
 
 function clearDiv() {
-    dogContainer.innerHTML = "" // https://stackoverflow.com/questions/3450593/how-do-i-clear-the-content-of-a-div-using-javascript
+    picContainer.innerHTML = "" // https://stackoverflow.com/questions/3450593/how-do-i-clear-the-content-of-a-div-using-javascript
 }
